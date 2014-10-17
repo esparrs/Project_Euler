@@ -81,6 +81,9 @@ print "largest_prime: " + str(largest_prime)
 # ----------------------------------------------------------------------------
 
 # Project Euler Problem 4 SOLVED
+# Should look to refactor and get rid of all of the for loops - this is not pretty by any stretch of the
+# imagination
+
 # A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit 
 # numbers is 9009 = 91 * 99.
 
@@ -119,7 +122,31 @@ print "greatest palidrome: " + str(greatest_palidromes[0])
 					
 # ----------------------------------------------------------------------------
 
+# Project Euler Problem 5 
+# Probably should be refactored as well. Nested if statements make me cringe
 
+# 2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
+# What is the smallest positive number that is evenly divisible (divisible with no remainder) by all of the
+# numbers from 1 to 20?
 
+# If it's divisible by 20, it's then divisible by 1,2,4,5, and 10
+# In addition, if it's divisible by 18, it's then divisible by 3,6,9, and any combination of the multiples of 
+# 18 and 20: 12 and 15
+# In addition, if it's divisble by 16, it's then divisible by 8 as well
+# In addition, if it's divisble by 14, it's then divisible by 7 as well
+# We then have narrowed the scope to 20,19,18,17,16,14,13, and 11
 
-
+counter_problem_5 = 40
+evenly_divisble_bool = False
+while evenly_divisble_bool == False:
+	if counter_problem_5 % 19 == 0:
+		if counter_problem_5 % 18 == 0:
+			if counter_problem_5 % 17 == 0:
+				if counter_problem_5 % 16 == 0:
+					if counter_problem_5 % 14 == 0:
+						if counter_problem_5 % 13 == 0:
+							if counter_problem_5 % 11 == 0:
+								evenly_divisble_bool = True
+	counter_problem_5 += 20
+counter_problem_5 -= 20
+print "evenly divisible number: " + str(counter_problem_5)
