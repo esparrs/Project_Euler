@@ -1,3 +1,18 @@
+# Abstracted methods used in multiple problems:
+
+# check_prime is used in problems 3 and 7
+def check_prime(n):
+	print "checking prime: " + str(n)
+	# +1 is added because the end of the range function is exclusive
+	end_of_tmp_range = int(n**0.5)+1
+	if n % 2 == 0:
+		return False
+	for i in range(3,end_of_tmp_range,2):
+		if n % i == 0:
+			return False
+	return True
+
+
 # Project Euler Problem 1 SOLVED
 # If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
 # Find the sum of all the multiples of 3 or 5 below 1000.
@@ -62,16 +77,6 @@ print even_sum_problem_2
 # The prime factors of 13195 are 5, 7, 13 and 29.
 # What is the largest prime factor of the number 600851475143 ?
 
-def check_prime(n):
-	print "checking prime"
-	end_of_tmp_range = int(n**0.5)
-	if n % 2 == 0:
-		return False
-	for i in range(3,end_of_tmp_range,2):
-		if n % i == 0:
-			return False
-	return True
-
 largest_prime = 0
 other_factor_problem_three = 0
 end_of_range = int(600851475143**0.5)
@@ -132,7 +137,8 @@ print "greatest palidrome: " + str(greatest_palidromes[0])
 # ----------------------------------------------------------------------------
 
 # Project Euler Problem 5 SOLVED
-# Probably should be refactored as well. Nested if statements make me cringe
+# Probably should be refactored as well. Nested if statements make me cringe. Honestly, one plausible idea is 
+# to find the lcm of some of the ints in the narrowed scope... 
 
 # 2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
 # What is the smallest positive number that is evenly divisible (divisible with no remainder) by all of the
@@ -179,6 +185,84 @@ for i in xrange(0,101):
 	square_of_sum += i
 square_of_sum = square_of_sum**2
 print "difference: " + str(sum_of_squares - square_of_sum)
+
+# ----------------------------------------------------------------------------
+
+# Project Euler Problem 7 SOLVED
+# By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.
+# What is the 10 001st prime number?
+
+# Using the fact that all primes are either (6n-1) or (6n+1)
+
+# this will serve as n in our prime trick calculations
+counter_problem_7 = 3
+prime_list = [2,3,5,7,11,13]
+while len(prime_list) != 10001:
+	lower_prime = (6*counter_problem_7)-1
+	upper_prime = (6*counter_problem_7)+1
+	if check_prime(lower_prime) == True and len(prime_list) != 10001:
+		prime_list.append(lower_prime)
+	if check_prime(upper_prime) == True and len(prime_list) != 10001:
+		prime_list.append(upper_prime)
+	counter_problem_7 += 1
+# this is just cool because it actually has over 100000 primes in it
+print prime_list
+# should be the 10001 element
+print "10001st: " + str(prime_list[10000])
+
+# ----------------------------------------------------------------------------
+
+# Project Euler Problem 8 SOLVED
+# The four adjacent digits in the 1000-digit number that have the greatest product are 9 * 9 * 8 * 9 = 5832.
+# this thousand digit number is a long
+thousand_digit_number = int("""
+73167176531330624919225119674426574742355349194934
+96983520312774506326239578318016984801869478851843
+85861560789112949495459501737958331952853208805511
+12540698747158523863050715693290963295227443043557
+66896648950445244523161731856403098711121722383113
+62229893423380308135336276614282806444486645238749
+30358907296290491560440772390713810515859307960866
+70172427121883998797908792274921901699720888093776
+65727333001053367881220235421809751254540594752243
+52584907711670556013604839586446706324415722155397
+53697817977846174064955149290862569321978468622482
+83972241375657056057490261407972968652414535100474
+82166370484403199890008895243450658541227588666881
+16427171479924442928230863465674813919123162824586
+17866458359124566529476545682848912883142607690042
+24219022671055626321111109370544217506941658960408
+07198403850962455444362981230987879927244284909188
+84580156166097919133875499200524063689912560717606
+05886116467109405077541002256983155200055935729725
+71636269561882670428252483600823257530420752963450""".replace("\n", ""))
+# Find the thirteen adjacent digits in the 1000-digit number that have the greatest product. What is the value 
+# of this product?
+
+# this sounds like a little interval search and multiply
+
+greatest_product_problem_eight = (0,0,0)
+thousand_digit_string = str(thousand_digit_number)
+digit_map_problem_eight = map(int,thousand_digit_string)
+for start_digit_problem_eight in xrange(0,len(digit_map_problem_eight)):
+	# 988 / 13 = 76
+	if start_digit_problem_eight < 987:
+		tmp_product_problem_eight = 1
+		for one_of_thirteen_digits in xrange(0,13):
+			tmp_product_problem_eight = tmp_product_problem_eight * digit_map_problem_eight[start_digit_problem_eight + one_of_thirteen_digits]
+	else:
+		tmp_product_problem_eight = 1
+		end_digit_problem_eight = 1000 - start_digit_problem_eight
+		for one_of_thirteen_digits in xrange(0,end_digit_problem_eight):
+			tmp_product_problem_eight = tmp_product_problem_eight * digit_map_problem_eight[start_digit_problem_eight + one_of_thirteen_digits]
+	print "tmp_product_problem_eight: " + str(tmp_product_problem_eight)
+	if tmp_product_problem_eight > greatest_product_problem_eight[0]:
+		greatest_product_problem_eight = (tmp_product_problem_eight,start_digit_problem_eight,start_digit_problem_eight+13)
+print greatest_product_problem_eight
+
+
+
+
 
 
 
